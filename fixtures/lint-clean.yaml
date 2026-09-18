@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: Clean API
+  version: 1.0.0
+  description: >-
+    A document that satisfies every lint rule this tool checks, used as the
+    negative control for the design lint.
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      summary: List pets
+      description: Returns one page of pets.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of pets to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+        - name: page-token
+          in: query
+          description: Opaque cursor returned by the previous page.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of pets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetPage'
+        '400':
+          description: A query parameter was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createPet
+      summary: Create a pet
+      description: Creates a pet and returns the stored representation.
+      requestBody:
+        description: The pet to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPet'
+      responses:
+        '201':
+          description: The pet was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: The request body was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /pets/{petId}:
+    parameters:
+      - name: petId
+        in: path
+        description: Identifier of the pet.
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getPet
+      summary: Get a pet
+      description: Returns a single pet by identifier.
+      responses:
+        '200':
+          description: The requested pet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: No pet has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deletePet
+      summary: Delete a pet
+      description: Permanently removes a pet.
+      responses:
+        '204':
+          description: The pet was deleted.
+        '404':
+          description: No pet has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Pet:
+      type: object
+      description: A pet held by the store.
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Server-assigned identifier.
+        name:
+          type: string
+          description: Display name of the pet.
+      additionalProperties: false
+    NewPet:
+      type: object
+      description: Payload accepted when creating a pet.
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Display name of the pet.
+      additionalProperties: false
+    PetPage:
+      type: object
+      description: One page of pets.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: The pets on this page.
+          items:
+            $ref: '#/components/schemas/Pet'
+        next-page-token:
+          type: string
+          nullable: true
+          description: Cursor for the following page.
+      additionalProperties: false
+    Error:
+      type: object
+      description: A machine-readable error.
+      properties:
+        code:
+          type: string
+          description: Stable error code.
+      additionalProperties: false

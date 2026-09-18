@@ -1,0 +1,79 @@
+openapi: 3.0.3
+info:
+  title: Messy API
+  version: 1.0.0
+  description: A deliberately badly designed document used by the lint tests.
+paths:
+  /Widgets_List/:
+    get:
+      operationId: listWidgets
+      responses:
+        '200':
+          description: A list of widgets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Widget_Record'
+  /Widgets_List:
+    get:
+      operationId: listWidgets
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+      responses:
+        '404':
+          description: Not found.
+  /widget:
+    get:
+      summary: Returns every widget in one unpaged array.
+      responses:
+        '200':
+          description: Every widget.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /gadgets:
+    get:
+      operationId: listGadgets
+      description: Lists gadgets.
+      responses:
+        '200':
+          description: Every gadget.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '500': {}
+  /invoices/create:
+    post:
+      operationId: createInvoice
+      description: Creates an invoice.
+      responses:
+        '400':
+          description: The payload was invalid.
+  /widgets/{widgetId}:
+    get:
+      operationId: getWidget
+      description: Returns a single widget.
+      parameters:
+        - name: widgetId
+          in: path
+          schema:
+            type: string
+      responses: {}
+components:
+  schemas:
+    Widget_Record:
+      type: object
+      properties:
+        id:
+          type: string

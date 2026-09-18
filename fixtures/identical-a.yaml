@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: Identical Control API
+  version: 1.0.0
+  description: >-
+    Negative control: this file and identical-b.yaml / identical-c.json describe
+    exactly the same API in different syntax, so the diff must be empty.
+paths:
+  /widgets:
+    get:
+      operationId: listWidgets
+      summary: List widgets
+      description: Returns one page of widgets.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of widgets to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+        - name: page-token
+          in: query
+          description: Opaque cursor returned by the previous page.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of widgets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetPage'
+        '400':
+          description: A query parameter was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /widgets/{widgetId}:
+    parameters:
+      - name: widgetId
+        in: path
+        description: Identifier of the widget.
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getWidget
+      summary: Get a widget
+      description: Returns a single widget by identifier.
+      responses:
+        '200':
+          description: The requested widget.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Widget'
+        '404':
+          description: No widget has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Widget:
+      type: object
+      description: A widget.
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Server-assigned identifier.
+        name:
+          type: string
+          description: Display name of the widget.
+        status:
+          type: string
+          description: Lifecycle status.
+          enum:
+            - active
+            - retired
+      additionalProperties: false
+    WidgetPage:
+      type: object
+      description: One page of widgets.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: The widgets on this page.
+          items:
+            $ref: '#/components/schemas/Widget'
+        next-page-token:
+          type: string
+          nullable: true
+          description: Cursor for the following page.
+      additionalProperties: false
+    Error:
+      type: object
+      description: A machine-readable error.
+      properties:
+        code:
+          type: string
+          description: Stable error code.
+      additionalProperties: false

@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "component-schema-renamed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

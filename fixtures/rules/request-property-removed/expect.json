@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "potentially-breaking",
+      "request-property-removed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

@@ -1,0 +1,16 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "response-property-removed"
+    ],
+    [
+      "compatible",
+      "property-added"
+    ]
+  ],
+  "notes_contain": [
+    "possibly renamed to 'label'"
+  ],
+  "warnings_contain": []
+}

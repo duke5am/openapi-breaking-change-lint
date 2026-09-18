@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "request-body-became-optional"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

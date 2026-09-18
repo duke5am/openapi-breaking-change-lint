@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "constraint-relaxed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

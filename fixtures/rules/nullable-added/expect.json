@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "potentially-breaking",
+      "nullable-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

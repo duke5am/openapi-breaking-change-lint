@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "potentially-breaking",
+      "items-schema-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

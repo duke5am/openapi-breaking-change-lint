@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "potentially-breaking",
+      "constraint-tightened"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

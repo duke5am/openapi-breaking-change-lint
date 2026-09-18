@@ -1,0 +1,165 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "additionalProperties": false,
+        "description": "A machine-readable error.",
+        "properties": {
+          "code": {
+            "description": "Stable error code.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Widget": {
+        "additionalProperties": false,
+        "description": "A widget.",
+        "properties": {
+          "id": {
+            "description": "Server-assigned identifier.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Display name of the widget.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Lifecycle status.",
+            "enum": [
+              "active",
+              "retired"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "WidgetPage": {
+        "additionalProperties": false,
+        "description": "One page of widgets.",
+        "properties": {
+          "items": {
+            "description": "The widgets on this page.",
+            "items": {
+              "$ref": "#/components/schemas/Widget"
+            },
+            "type": "array"
+          },
+          "next-page-token": {
+            "description": "Cursor for the following page.",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Negative control: this file and identical-b.yaml / identical-c.json describe exactly the same API in different syntax, so the diff must be empty.",
+    "title": "Identical Control API",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/widgets": {
+      "get": {
+        "description": "Returns one page of widgets.",
+        "operationId": "listWidgets",
+        "parameters": [
+          {
+            "description": "Maximum number of widgets to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Opaque cursor returned by the previous page.",
+            "in": "query",
+            "name": "page-token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WidgetPage"
+                }
+              }
+            },
+            "description": "A page of widgets."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "A query parameter was invalid."
+          }
+        },
+        "summary": "List widgets"
+      }
+    },
+    "/widgets/{widgetId}": {
+      "get": {
+        "description": "Returns a single widget by identifier.",
+        "operationId": "getWidget",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Widget"
+                }
+              }
+            },
+            "description": "The requested widget."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "No widget has that identifier."
+          }
+        },
+        "summary": "Get a widget"
+      },
+      "parameters": [
+        {
+          "description": "Identifier of the widget.",
+          "in": "path",
+          "name": "widgetId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}

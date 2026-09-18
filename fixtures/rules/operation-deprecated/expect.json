@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "operation-deprecated"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

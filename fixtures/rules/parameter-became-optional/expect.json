@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "parameter-became-optional"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

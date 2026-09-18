@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "request-body-became-required"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

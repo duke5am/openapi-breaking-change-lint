@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "response-header-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

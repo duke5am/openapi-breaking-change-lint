@@ -1,0 +1,22 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "security-requirement-added"
+    ],
+    [
+      "breaking",
+      "security-requirement-added"
+    ],
+    [
+      "breaking",
+      "security-requirement-added"
+    ],
+    [
+      "breaking",
+      "security-requirement-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

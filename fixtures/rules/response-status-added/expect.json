@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "response-status-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

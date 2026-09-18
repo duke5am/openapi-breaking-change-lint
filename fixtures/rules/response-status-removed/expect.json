@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "response-status-removed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

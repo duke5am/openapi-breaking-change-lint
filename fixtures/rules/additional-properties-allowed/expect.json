@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "additional-properties-allowed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

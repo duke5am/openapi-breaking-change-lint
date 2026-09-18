@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "response-property-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

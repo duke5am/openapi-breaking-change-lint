@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "schema-unresolvable"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "content-type-added"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

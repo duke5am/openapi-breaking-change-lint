@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "security-requirement-removed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

@@ -1,0 +1,154 @@
+openapi: "3.0.3"
+info:
+  title: Rule case API
+  version: "1.0.0"
+  description: Fixture used by the openapi-contract-diff classification tests.
+paths:
+  "/things":
+    get:
+      operationId: listThings
+      summary: List things
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: A page of things
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/ThingPage"
+        "400":
+          description: Bad request
+    post:
+      operationId: createThing
+      summary: Create a thing
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/NewThing"
+      responses:
+        "201":
+          description: Created
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Thing"
+        "422":
+          description: Invalid thing
+  "/things/{thingId}":
+    get:
+      operationId: getThing
+      summary: Get a thing
+      parameters:
+        - name: thingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A thing
+          headers:
+            ETag:
+              description: Entity tag
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              description: Calls left
+              schema:
+                type: integer
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/Thing"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteThing
+      summary: Delete a thing
+      parameters:
+        - name: thingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+  schemas:
+    Thing:
+      type: object
+      description: A thing.
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        tag:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum:
+            - active
+            - retired
+            - pending
+        size:
+          type: integer
+          format: int32
+        note:
+          type: string
+        shape:
+          "$ref": "#/components/schemas/Shape"
+      additionalProperties: true
+    ThingPage:
+      type: object
+      description: A page of things.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Thing"
+        total:
+          type: integer
+    NewThing:
+      type: object
+      description: Payload for creating a thing.
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        tag:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      description: An error.
+      properties:
+        code:
+          type: string
+    Shape:
+      oneOf:
+        - type: string
+        - type: integer

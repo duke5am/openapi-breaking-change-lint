@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "potentially-breaking",
+      "enum-constraint-removed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

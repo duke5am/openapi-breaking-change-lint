@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "additional-properties-forbidden"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

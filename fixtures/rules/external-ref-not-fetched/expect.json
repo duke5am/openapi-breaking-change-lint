@@ -1,0 +1,7 @@
+{
+  "findings": [],
+  "notes_contain": [],
+  "warnings_contain": [
+    "external $ref"
+  ]
+}

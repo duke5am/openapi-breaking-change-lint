@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "breaking",
+      "content-type-removed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

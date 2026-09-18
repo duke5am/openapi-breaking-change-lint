@@ -1,0 +1,317 @@
+openapi: 3.0.3
+info:
+  title: Pet Store API
+  version: 1.4.0
+  description: >-
+    A small example API used to demonstrate openapi-contract-diff. Every value
+    in this file is obviously fake.
+servers:
+  - url: https://api.example.test/v1
+    description: Production
+security:
+  - apiKey: []
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      summary: List pets
+      description: Returns one page of pets, newest first.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of pets to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: page-token
+          in: query
+          description: Opaque cursor returned by the previous page.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of pets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetPage'
+        '400':
+          description: A query parameter was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createPet
+      summary: Create a pet
+      description: Creates a pet and returns the stored representation.
+      requestBody:
+        description: The pet to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPet'
+      responses:
+        '201':
+          description: The pet was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: The request body was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: A pet with that name already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /pets/{petId}:
+    parameters:
+      - name: petId
+        in: path
+        description: Identifier of the pet.
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: getPet
+      summary: Get a pet
+      description: Returns a single pet by identifier.
+      responses:
+        '200':
+          description: The requested pet.
+          headers:
+            ETag:
+              description: Entity tag of the returned representation.
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              description: Requests left in the current window.
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: No pet has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updatePet
+      summary: Update a pet
+      description: Applies a partial update to a pet.
+      requestBody:
+        description: The fields to change.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPet'
+      responses:
+        '200':
+          description: The updated pet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: No pet has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deletePet
+      summary: Delete a pet
+      description: Permanently removes a pet.
+      responses:
+        '204':
+          description: The pet was deleted.
+        '404':
+          description: No pet has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /pets/{petId}/toys:
+    parameters:
+      - name: petId
+        in: path
+        description: Identifier of the pet.
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: listPetToys
+      summary: List a pet's toys
+      description: Returns one page of the toys belonging to a pet.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of toys to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+        - name: page-token
+          in: query
+          description: Opaque cursor returned by the previous page.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of toys.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToyPage'
+        '404':
+          description: No pet has that identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: API key issued per tenant.
+  schemas:
+    Pet:
+      type: object
+      description: A pet held by the store.
+      required:
+        - id
+        - name
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Server-assigned identifier.
+        name:
+          type: string
+          description: Display name of the pet.
+        status:
+          type: string
+          description: Lifecycle status.
+          enum:
+            - available
+            - pending
+            - sold
+        tag:
+          type: string
+          nullable: true
+          description: Free-form label shown in the store front.
+        weight-grams:
+          type: integer
+          format: int32
+          description: Body weight in grams.
+        photo-urls:
+          type: array
+          description: Public URLs of photos, newest first.
+          items:
+            type: string
+            format: uri
+      additionalProperties: false
+    NewPet:
+      type: object
+      description: Payload accepted when creating or updating a pet.
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Display name of the pet.
+        tag:
+          type: string
+          nullable: true
+          description: Free-form label shown in the store front.
+      additionalProperties: false
+    PetPage:
+      type: object
+      description: One page of pets.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: The pets on this page.
+          items:
+            $ref: '#/components/schemas/Pet'
+        next-page-token:
+          type: string
+          nullable: true
+          description: Cursor for the following page, absent on the last page.
+        total:
+          type: integer
+          description: Total number of pets in the collection.
+      additionalProperties: false
+    Toy:
+      type: object
+      description: A toy belonging to a pet.
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Server-assigned identifier.
+        name:
+          type: string
+          description: Display name of the toy.
+      additionalProperties: true
+    ToyPage:
+      type: object
+      description: One page of toys.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: The toys on this page.
+          items:
+            $ref: '#/components/schemas/Toy'
+        next-page-token:
+          type: string
+          nullable: true
+          description: Cursor for the following page, absent on the last page.
+      additionalProperties: false
+    Error:
+      type: object
+      description: A machine-readable error.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Stable error code.
+        message:
+          type: string
+          description: Human-readable explanation.
+      additionalProperties: false

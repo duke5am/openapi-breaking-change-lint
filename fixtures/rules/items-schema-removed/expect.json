@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "compatible",
+      "items-schema-removed"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}

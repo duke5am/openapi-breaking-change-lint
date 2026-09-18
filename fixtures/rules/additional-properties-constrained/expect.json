@@ -1,0 +1,10 @@
+{
+  "findings": [
+    [
+      "potentially-breaking",
+      "additional-properties-constrained"
+    ]
+  ],
+  "notes_contain": [],
+  "warnings_contain": []
+}
