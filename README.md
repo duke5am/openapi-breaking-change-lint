@@ -422,4 +422,27 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FO
 OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+<!-- RELATED:START -->
+
+## Related tools
+
+- **[mv3-manifest-lint](https://github.com/duke5am/mv3-manifest-lint)** — Static linter for Chrome Manifest V3 extensions: the mistakes that get you rejected from the Web Store or break at runtime. 37 rules.
+  *(if you were searching for "chrome extension manifest v3 errors")*
+- **[schema-jsonld-validator](https://github.com/duke5am/schema-jsonld-validator)** — Validate JSON-LD structured data against the real schema.org vocabulary and Google's requirements, and warn on markup features Google has retired.
+  *(if you were searching for "json-ld validator")*
+- **[stripe-webhook-replay](https://github.com/duke5am/stripe-webhook-replay)** — Replay Stripe subscription webhooks at your local handler with real signatures: out-of-order delivery, dunning failures, duplicates and retries.
+  *(if you were searching for "replay stripe webhooks locally")*
+- **[vscode-extension-lint](https://github.com/duke5am/vscode-extension-lint)** — Static linter for a VS Code extension project: manifest, .vscodeignore and packaging mistakes that get you rejected or ship a broken extension.
+  *(if you were searching for "vscode extension publishing errors")*
+- **[wcag-axe-crawler](https://github.com/duke5am/wcag-axe-crawler)** — Crawl a site with axe-core and report WCAG violations, and generate an accessibility statement that refuses to claim conformance you cannot prove.
+  *(if you were searching for "wcag accessibility audit tool")*
+- **[webhook-signature-verify](https://github.com/duke5am/webhook-signature-verify)** — Verify Stripe, GitHub and Shopify webhook signatures correctly, plus race-free idempotency so a retried delivery can never execute twice.
+  *(if you were searching for "stripe webhook signature verification")*
+
+All 28 tools in this set, grouped by what they check: **[dev-tools-index](https://duke5am.github.io/dev-tools-index/)**
+
+If you arrived here searching for one of these, this is the tool: **openapi breaking changes** · **compare two openapi specs** · **api contract diff ci** · **swagger breaking change detection**
+
+<!-- RELATED:END -->
+
 → **[API Contract & Design Pack](https://duke5am.gumroad.com/l/08-api-contract-pack)** — $24 on Gumroad <!-- GUMROAD-LINK -->
