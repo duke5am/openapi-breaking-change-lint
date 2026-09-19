@@ -1,5 +1,4 @@
-# openapi-contract-diff
-
+# openapi-breaking-change-lint
 A small, dependency-free CLI that diffs two OpenAPI 3.x documents and tells you, for every change,
 whether it is **breaking**, **potentially breaking**, or **compatible** — then lints the new document
 against published API design guidance. It is meant to sit in CI and fail a pull request that quietly
