@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openapi-breaking-change-lint"
+version = "0.1.0"
+description = "Diff two OpenAPI 3.x documents, classify every change as breaking, potentially breaking or compatible, and lint the new document."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "duke5am" }]
+keywords = [
+  "openapi", "api", "contract", "breaking-change", "diff", "linter",
+  "static-analysis", "ci", "yaml",
+]
+classifiers = [
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+# Standard library only. PyYAML is used when it happens to be importable and
+# the bundled miniyaml reader is the fallback, so it stays optional.
+dependencies = []
+
+[project.optional-dependencies]
+# Optional: use PyYAML's full YAML 1.1 parser instead of the bundled subset
+# reader. Everything works without it, including JSON input.
+yaml = ["PyYAML>=5.4"]
+
+[project.scripts]
+openapi-breaking-change-lint = "openapi_contract_lint.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/duke5am/openapi-breaking-change-lint"
+Issues = "https://github.com/duke5am/openapi-breaking-change-lint/issues"
+
+[tool.setuptools]
+packages = ["openapi_contract_lint"]
+include-package-data = true

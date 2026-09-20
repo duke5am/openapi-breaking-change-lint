@@ -1,4 +1,7 @@
 # openapi-breaking-change-lint
+
+[![PyPI](https://img.shields.io/pypi/v/openapi-breaking-change-lint)](https://pypi.org/project/openapi-breaking-change-lint/)
+
 A small, dependency-free CLI that diffs two OpenAPI 3.x documents and tells you, for every change,
 whether it is **breaking**, **potentially breaking**, or **compatible** — then lints the new document
 against published API design guidance. It is meant to sit in CI and fail a pull request that quietly
@@ -10,11 +13,12 @@ $ python3 openapi_contract_diff.py fixtures/petstore-v1.yaml fixtures/petstore-v
 RESULT: FAIL (14 breaking change(s) at the 'breaking' threshold)
 ```
 
-- **No dependencies.** Standard library only; `pip install` is never needed.
+- **No dependencies.** Standard library only; the tool works with no `pip install` at all and
+  installs nothing beyond itself when you do use `pip`.
 - **YAML and JSON**, with a built-in YAML reader for machines that have no PyYAML.
 - **Local `$ref` resolution**, including `allOf` merging and recursive schemas.
 - **Every lint rule cites the guidance it comes from** — no invented "best practices".
-- **MIT licensed.** Tests included: 134 tests, ~2 380 assertions, one fixture pair per rule.
+- **MIT licensed.** Tests included: 136 tests, ~2 430 assertions, one fixture pair per rule.
 
 ---
 
@@ -22,6 +26,7 @@ RESULT: FAIL (14 breaking change(s) at the 'breaking' threshold)
 
 - [What it does](#what-it-does)
 - [Requirements](#requirements)
+- [Install](#install)
 - [Usage](#usage)
 - [Exit codes](#exit-codes)
 - [Example output](#example-output)
@@ -51,12 +56,27 @@ The diff decides the exit code. Lint findings are advisory unless you pass `--fa
 
 ## Requirements
 
-- Python 3.8 or newer. **Verified on CPython 3.13.5**; the source avoids anything newer than 3.8
+- Python 3.9 or newer. **Verified on CPython 3.13.5**; the source avoids anything newer than 3.9
   syntax, but no older interpreter was available to test on.
 - PyYAML is optional. If `python3 -c "import yaml"` succeeds, PyYAML is used; otherwise the bundled
   `miniyaml` reader is used, and JSON input works either way.
 
-Nothing to install. Keep the four `.py` files in one directory and run the entry point.
+Nothing beyond the standard library is installed either way.
+
+## Install
+
+```console
+pip install openapi-breaking-change-lint          # from PyPI
+openapi-breaking-change-lint old.yaml new.yaml
+```
+
+Or clone and run the entry point — same code, nothing to install:
+
+```console
+git clone https://github.com/duke5am/openapi-breaking-change-lint
+cd openapi-breaking-change-lint
+python3 openapi_contract_diff.py fixtures/petstore-v1.yaml fixtures/petstore-v2.yaml
+```
 
 ## Usage
 
@@ -376,7 +396,7 @@ Honest limits, in roughly the order they are likely to bite:
 python3 -m unittest discover -s tests -v
 ```
 
-- 134 tests, ~2 380 assertions, all passing.
+- 136 tests, ~2 430 assertions, all passing.
 - One fixture pair per classification rule under `fixtures/rules/` (68 cases), each with an
   `expect.json` that is asserted as an exact multiset, so *over*-reporting fails the suite too. Every
   case is run through both YAML readers.
@@ -392,14 +412,22 @@ python3 -m unittest discover -s tests -v
 ## Repository layout
 
 ```
-openapi_contract_diff.py   CLI entry point, output rendering, exit codes
-contractdiff.py            the diff engine and the classification rules
-designlint.py              the design lint and its citations
-miniyaml.py                the built-in YAML subset reader (no PyYAML needed)
+openapi_contract_diff.py   CLI entry point (thin wrapper around the package)
+openapi_contract_lint/
+  cli.py                   argument parsing, output rendering, exit codes
+  contractdiff.py          the diff engine and the classification rules
+  designlint.py            the design lint and its citations
+  miniyaml.py              the built-in YAML subset reader (no PyYAML needed)
+pyproject.toml             packaging: console script and metadata
+MANIFEST.in                what the sdist ships besides the packages
 fixtures/                  end-to-end fixtures, negative controls, lint fixtures
 fixtures/rules/<case>/     one old.yaml + new.yaml + expect.json per classification rule
 tests/                     unittest suite
 ```
+
+`miniyaml.py`, `contractdiff.py` and `designlint.py` are also kept at the repository root as
+one-line import shims, so `import contractdiff` still works from a checkout; they point at the
+package modules rather than holding a second copy of the code.
 
 ## Licence
 

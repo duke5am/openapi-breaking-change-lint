@@ -436,6 +436,34 @@ class BehaviourTests(unittest.TestCase):
         result = diff_documents(old, new)
         self.assertEqual(fingerprint(result), ["compatible:component-schema-renamed"])
 
+    def test_components_that_is_not_a_mapping_is_tolerated(self):
+        """Regression: a truthy non-mapping ``components`` used to raise AttributeError.
+
+        ``components`` is optional and the diff engine guards every other
+        optional object (``paths``, ``servers``, each component section) with
+        an ``isinstance(..., dict)`` check.  The schema-rename comparison read
+        through ``components`` without that guard, so a structurally wrong but
+        perfectly parseable document like ``{"components": [1]}`` escaped as a
+        traceback out of the CLI instead of being ignored.
+        """
+        for components in ([1], "components", 7, {}, [], None):
+            with self.subTest(components=components):
+                document = spec({}, None)
+                document["components"] = components
+                result = diff_documents(document, dict(document))
+                self.assertEqual(result.findings, [])
+                self.assertEqual(result.exit_code(BREAKING), 0)
+
+    def test_components_schemas_that_is_not_a_mapping_is_tolerated(self):
+        """The same guard, one level down: ``components.schemas`` as a list."""
+        for schemas in ([1], "schemas", 7, {}, [], None):
+            with self.subTest(schemas=schemas):
+                document = spec({}, None)
+                document["components"] = {"schemas": schemas}
+                result = diff_documents(document, dict(document))
+                self.assertEqual(result.findings, [])
+                self.assertEqual(result.exit_code(BREAKING), 0)
+
 
 class PetStoreIntegrationTests(unittest.TestCase):
     """The two fixtures used in the README, asserted as a regression net."""
